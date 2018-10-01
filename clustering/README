@@ -1,0 +1,42 @@
+Structr - Neo4j Causal Clustering Setup
+
+1. Setup
+	docker-compose build
+2. Starting the instances
+	docker-compose up -d
+
+	- This will take a while and once ready the following web interfaces will be exposed:
+
+		localhost:8082 - Structr
+		localhost:7474 - Neo4j CC Node 1
+		localhost:7475 - Neo4j CC Node 2
+		localhost:7476 - Neo4j CC Node 3
+
+		!! Warning !!
+
+		When accessing Node2 and Node3 the default bolt-Ports need to be changed in the web interface before connecting
+
+		Bolt Ports:
+		localhost:7687 - Neo4j CC Node1
+		localhost:7688 - Neo4j CC Node2
+		localhost:7689 - Neo4j CC Node3
+
+
+3. Connecting to the instances
+
+	- Get the container id
+		docker ps
+
+	- Connect to the container
+		docker exec -it [id] /bin/sh
+
+	- Alternatively attach to the container
+		docker attach [id]
+
+			- Attaching to the structr instance right after the docker-compose up command, gives direct log output similar to run_debug.sh
+
+	- Copy files, e.g. log out of the container
+		docker cp [id]:[filePath] [destination]
+
+4. Stopping the cluster
+	docker-compose down

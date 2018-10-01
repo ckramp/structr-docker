@@ -1,0 +1,58 @@
+version: '2'
+services:
+  neo4j-cc-node1:
+    image: neo4j:3.2.3-enterprise
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    networks:
+      - cc
+    environment:
+      - NEO4J_AUTH=neo4j/structr
+      - NEO4J_dbms_mode=CORE
+      - NEO4J_dbms_connectors_defaultAdvertisedAddress=neo4j-cc-node1
+      - NEO4J_causalClustering_expectedCoreClusterSize=3
+      - NEO4J_causalClustering_initialDiscoveryMembers=neo4j-cc-node1:5000,neo4j-cc-node2:5000,neo4j-cc-node3:5000
+  neo4j-cc-node2:
+    image: neo4j:3.2.3-enterprise
+    ports:
+      - "7475:7474"
+      - "7688:7687"
+    networks:
+      - cc
+    environment:
+      - NEO4J_AUTH=neo4j/structr
+      - NEO4J_dbms_mode=CORE
+      - NEO4J_dbms_connectors_defaultAdvertisedAddress=neo4j-cc-node2
+      - NEO4J_causalClustering_expectedCoreClusterSize=3
+      - NEO4J_causalClustering_initialDiscoveryMembers=neo4j-cc-node1:5000,neo4j-cc-node2:5000,neo4j-cc-node3:5000
+  neo4j-cc-node3:
+    image: neo4j:3.2.3-enterprise
+    ports:
+      - "7476:7474"
+      - "7689:7687"
+    networks:
+      - cc
+    environment:
+      - NEO4J_AUTH=neo4j/structr
+      - NEO4J_dbms_mode=CORE
+      - NEO4J_dbms_connectors_defaultAdvertisedAddress=neo4j-cc-node3
+      - NEO4J_causalClustering_discoveryAdvertisedAddress=neo4j-cc-node3:5000
+      - NEO4J_causalClustering_transactionAdvertisedAddress=neo4j-cc-node3:6000
+      - NEO4J_causalClustering_raftAdvertisedAddress=neo4j-cc-node3:7000
+      - NEO4J_causalClustering_expectedCoreClusterSize=3
+      - NEO4J_causalClustering_initialDiscoveryMembers=neo4j-cc-node1:5000,neo4j-cc-node2:5000,neo4j-cc-node3:5000
+  structr-cc:
+    build: ./structr
+    depends_on:
+      - neo4j-cc-node1
+      - neo4j-cc-node2
+      - neo4j-cc-node3
+    ports:
+     - "8082:8082"
+    networks:
+      cc:
+        aliases:
+          - structr
+networks:
+  cc:

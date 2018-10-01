@@ -1,0 +1,23 @@
+Structr GC Demo Setup
+
+Requirements:
+	- docker
+	- docker-compose
+
+Usage:
+	Initial setup:
+		docker-compose build
+	
+	Starting the instances:
+		docker-compose up -d
+
+	Stopping the instances:
+		docker-compose down
+
+	Inspecting the containers
+		1. docker ps
+		2. Note the container id
+		3. docker exec -it <Unique identifier for container> /bin/sh
+
+Additional info:
+	- GC2017-Data.cql contains the Cypher-Statements used to prepare the given Neo4j instance
