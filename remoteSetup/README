@@ -1,0 +1,35 @@
+Structr Stack Setup
+
+Requirements:
+	- docker
+	- docker-compose
+	- Existance of the following folder in the docker-compose.yml directory:
+		- ./mount/
+		- ./mount/structr
+		- ./mount/neo4j
+
+Preperations:
+	- Structr
+		- Before building the image, the following Structr files should be prepared
+			- structr.conf : ./structr/bootstrap/structr.conf
+			- license.key : ./structr/bootstrap/license.key
+
+Usage:
+	Initial optional setup / image rebuild:
+		docker-compose build
+	
+	Starting the instances:
+		docker-compose up -d
+
+	Stopping the instances:
+		docker-compose down
+
+	Inspecting the containers
+		1. docker ps
+		2. Note the container id
+		3. docker exec -it <Unique identifier for container> /bin/sh
+
+	Mounted volumes
+		Both instances expose their mounted files as volumes under their respective ./mount/ path
+		- neo4j: ./mount/neo4j
+		- structr: ./mount/structr
